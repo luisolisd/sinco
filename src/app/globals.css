@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #f5f2eb;
+  --teal: #1a7a8a;
+  --teal-dark: #155f6d;
+  --navy: #2c3e50;
+  --dark: #1a1a1a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-barlow), 'Helvetica Neue', sans-serif;
+  background-color: var(--cream);
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+/* ── Machine animations ── */
+
+/* Excavator working oscillation — rocking around the machine body pivot */
+.machine-work {
+  animation: machineWork 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  transform-origin: 62% 68%;
+  will-change: transform;
+}
+
+@keyframes machineWork {
+  0%   { transform: rotate(0deg)    scale(1.000) translateY(0px); }
+  12%  { transform: rotate(0.45deg) scale(1.004) translateY(-2px); }
+  28%  { transform: rotate(-0.3deg) scale(1.008) translateY(-4px); }
+  42%  { transform: rotate(0.55deg) scale(1.006) translateY(-2px); }
+  58%  { transform: rotate(-0.25deg)scale(1.010) translateY(-5px); }
+  72%  { transform: rotate(0.4deg)  scale(1.007) translateY(-3px); }
+  88%  { transform: rotate(-0.35deg)scale(1.003) translateY(-1px); }
+  100% { transform: rotate(0deg)    scale(1.000) translateY(0px); }
+}
+
+/* Warm golden-hour sun pulse */
+.sun-pulse {
+  background: radial-gradient(
+    ellipse at 82% 8%,
+    rgba(255, 190, 70, 0.12) 0%,
+    rgba(255, 140, 30, 0.06) 35%,
+    transparent 65%
+  );
+  animation: sunPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes sunPulse {
+  from { opacity: 0.5; }
+  to   { opacity: 1.0; }
+}
+
+/* Blueprint grid overlay on hero */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(26, 122, 138, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 122, 138, 0.06) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Section tag */
+.section-tag {
+  @apply inline-flex items-center gap-2 text-teal font-heading font-semibold text-sm tracking-[0.2em] uppercase mb-4;
+}
+
+.section-tag::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 2px;
+  background-color: var(--teal);
+}
+
+/* Service card hover */
+.service-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(26, 122, 138, 0.15);
+}
+
+/* Project card */
+.project-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card img {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.project-card:hover img {
+  transform: scale(1.06);
+}
+
+.project-card .overlay {
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .overlay {
+  opacity: 1;
+}
+
+/* WhatsApp floating button */
+.whatsapp-btn {
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  50% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+}
+
+/* Lean Construction section */
+.lean-card {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.lean-card:hover {
+  background-color: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+
+.lean-card:hover .lean-icon {
+  color: white;
+}
+
+.lean-card:hover .lean-text {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Form inputs */
+.sinco-input {
+  @apply w-full bg-cream border border-cream-darker rounded-lg px-4 py-3 text-sinco-dark placeholder-sinco-muted outline-none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sinco-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(26, 122, 138, 0.12);
+}
+
+/* Stat counters */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scroll reveal utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Nav link hover */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--teal);
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
