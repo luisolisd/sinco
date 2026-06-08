@@ -21,8 +21,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Correo',
-    lines: ['proyectos@sinco.mx'],
-    href: 'mailto:proyectos@sinco.mx',
+    lines: ['sinco.constructora1@gmail.com'],
+    href: 'mailto:sinco.constructora1@gmail.com',
   },
   {
     icon: MapPin,
@@ -37,13 +37,28 @@ export default function ContactSection() {
   const inView = useInView(ref, { once: true, margin: '-60px' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setLoading(false)
-    setSent(true)
+    setError(false)
+    try {
+      const res = await fetch('https://formspree.io/f/mgobkjkj', {
+        method: 'POST',
+        body: new FormData(e.currentTarget),
+        headers: { Accept: 'application/json' },
+      })
+      if (res.ok) {
+        setSent(true)
+      } else {
+        setError(true)
+      }
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -169,11 +184,11 @@ export default function ContactSection() {
                     <label className="block font-heading font-semibold text-navy text-sm mb-2">
                       Nombre <span className="text-teal">*</span>
                     </label>
-                    <input required type="text" placeholder="Tu nombre completo" className="sinco-input" />
+                    <input required type="text" name="nombre" placeholder="Tu nombre completo" className="sinco-input" />
                   </div>
                   <div>
                     <label className="block font-heading font-semibold text-navy text-sm mb-2">Empresa</label>
-                    <input type="text" placeholder="Nombre de tu empresa" className="sinco-input" />
+                    <input type="text" name="empresa" placeholder="Nombre de tu empresa" className="sinco-input" />
                   </div>
                 </div>
 
@@ -182,11 +197,11 @@ export default function ContactSection() {
                     <label className="block font-heading font-semibold text-navy text-sm mb-2">
                       Correo <span className="text-teal">*</span>
                     </label>
-                    <input required type="email" placeholder="tu@correo.com" className="sinco-input" />
+                    <input required type="email" name="correo" placeholder="tu@correo.com" className="sinco-input" />
                   </div>
                   <div>
                     <label className="block font-heading font-semibold text-navy text-sm mb-2">Teléfono</label>
-                    <input type="tel" placeholder="477 000 0000" className="sinco-input" />
+                    <input type="tel" name="telefono" placeholder="477 000 0000" className="sinco-input" />
                   </div>
                 </div>
 
@@ -196,11 +211,18 @@ export default function ContactSection() {
                   </label>
                   <textarea
                     required
+                    name="mensaje"
                     rows={5}
                     placeholder="Describe brevemente el proyecto: tipo de obra, ubicación, dimensiones aproximadas, fechas estimadas..."
                     className="sinco-input resize-none"
                   />
                 </div>
+
+                {error && (
+                  <p className="font-body text-red-500 text-sm text-center">
+                    Hubo un error al enviar. Intenta de nuevo o escríbenos por WhatsApp.
+                  </p>
+                )}
 
                 <button
                   type="submit"
